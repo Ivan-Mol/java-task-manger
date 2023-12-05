@@ -1,8 +1,8 @@
 package dev.ivanmol.taskmanager.service;
 
-import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
+import dev.ivanmol.taskmanager.dto.user.UserDto;
 
 import java.util.Collection;
 import java.util.List;

@@ -27,7 +27,7 @@ public interface TaskService {
 
     TaskDto createTask(Long authorId, NewTaskRequestDto requestDto);
 
-    TaskDto updateTaskByAuthor(Long authorId,Long taskId, UpdateTaskRequestDto requestDto);
+    TaskDto updateTaskByAuthor(Long authorId, Long taskId, UpdateTaskRequestDto requestDto);
 
     void deleteTaskByAuthor(Long authorId, Long taskId);
 

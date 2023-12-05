@@ -32,6 +32,6 @@ public class Task {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
     @ManyToOne
-    @JoinColumn(name = "performer_id", referencedColumnName = "id")
-    private User performer;
+    @JoinColumn(name = "assignee_id", referencedColumnName = "id")
+    private User assignee;
 }

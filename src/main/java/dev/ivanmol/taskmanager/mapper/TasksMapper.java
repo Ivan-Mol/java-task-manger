@@ -19,6 +19,7 @@ public class TasksMapper {
         taskDto.setStatus(task.getStatus());
         taskDto.setPriority(task.getPriority());
         taskDto.setAuthorId(task.getAuthor().getId());
+        taskDto.setAssigneeId(task.getAssignee().getId());
         return taskDto;
     }
 

@@ -21,7 +21,7 @@ public class PublicTaskController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskDto getTaskById(@PathVariable Long id){
+    public TaskDto getTaskById(@PathVariable Long id) {
         log.info("GET/getTaskById with id " + id);
         return taskService.getById(id);
     }

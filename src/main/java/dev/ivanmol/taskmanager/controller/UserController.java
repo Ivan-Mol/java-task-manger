@@ -1,8 +1,8 @@
 package dev.ivanmol.taskmanager.controller;
 
-import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
+import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;

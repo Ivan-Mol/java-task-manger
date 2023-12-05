@@ -38,7 +38,7 @@ public class PrivateTaskController {
     public TaskDto updateTaskByAuthor(@PathVariable Long authorId,
                                       @PathVariable Long taskId,
                                       @RequestBody UpdateTaskRequestDto updateDto) {
-        log.info("PATCH/updateTaskByAuthor with taskId " + authorId + "task: " + updateDto);
+        log.info("PATCH/updateTaskByAuthor with taskId " + authorId + " " + updateDto);
         return taskService.updateTaskByAuthor(authorId, taskId, updateDto);
     }
 }

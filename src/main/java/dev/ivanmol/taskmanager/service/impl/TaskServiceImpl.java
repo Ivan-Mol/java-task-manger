@@ -46,6 +46,7 @@ public class TaskServiceImpl implements TaskService {
         User author = userRepository.getByIdAndCheck(authorId);
         Task taskFromDb = taskRepository.getByIdAndCheck(taskId);
         isUserTaskAuthor(author, taskFromDb);
+        checkAndSetAssigneeToTask(requestDto, taskFromDb);
         Task updatedTask = TasksMapper.update(taskFromDb, requestDto);
         isTaskValid(updatedTask);
         return TasksMapper.toTaskDto(taskRepository.save(updatedTask));
@@ -90,8 +91,17 @@ public class TaskServiceImpl implements TaskService {
         if (description.length() < 2 || description.length() > 3000) {
             throw new ValidationException("Description is shorter than 2 or longer than 3000");
         }
-        if (task.getPerformer() != null && task.getAuthor().getId().equals(task.getPerformer().getId())) {
-            throw new ValidationException("Author can't be a performer");
+        if(task.getAssignee()!=null){
+            userRepository.getByIdAndCheck(task.getAssignee().getId());
+            if (task.getAuthor().getId().equals(task.getAssignee().getId())) {
+                throw new ValidationException("Author can't be a performer");
+            }
+        }
+    }
+
+    private void checkAndSetAssigneeToTask(UpdateTaskRequestDto requestDto, Task taskFromDb) {
+        if (requestDto.getAssigneeId()!=null){
+            taskFromDb.setAssignee(userRepository.getByIdAndCheck(requestDto.getAssigneeId()));
         }
     }
 }

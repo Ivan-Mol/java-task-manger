@@ -1,9 +1,9 @@
 package dev.ivanmol.taskmanager.mapper;
 
-import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
-import dev.ivanmol.taskmanager.dto.user.UserShortDto;
 import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
+import dev.ivanmol.taskmanager.dto.user.UserDto;
+import dev.ivanmol.taskmanager.dto.user.UserShortDto;
 import dev.ivanmol.taskmanager.model.user.User;
 
 import java.util.Collection;

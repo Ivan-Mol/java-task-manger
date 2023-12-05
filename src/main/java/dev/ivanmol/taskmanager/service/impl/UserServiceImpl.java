@@ -1,8 +1,8 @@
 package dev.ivanmol.taskmanager.service.impl;
 
-import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
+import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.mapper.UsersMapper;
 import dev.ivanmol.taskmanager.model.user.User;
 import dev.ivanmol.taskmanager.repository.UserRepository;
