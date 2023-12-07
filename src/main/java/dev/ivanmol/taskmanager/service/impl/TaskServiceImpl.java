@@ -2,10 +2,10 @@ package dev.ivanmol.taskmanager.service.impl;
 
 import dev.ivanmol.taskmanager.dto.task.NewTaskRequestDto;
 import dev.ivanmol.taskmanager.dto.task.TaskDto;
-import dev.ivanmol.taskmanager.dto.task.TaskShortDto;
 import dev.ivanmol.taskmanager.dto.task.UpdateTaskRequestDto;
 import dev.ivanmol.taskmanager.exception.ValidationException;
 import dev.ivanmol.taskmanager.mapper.TasksMapper;
+import dev.ivanmol.taskmanager.model.task.Status;
 import dev.ivanmol.taskmanager.model.task.Task;
 import dev.ivanmol.taskmanager.model.user.User;
 import dev.ivanmol.taskmanager.repository.TaskRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,7 +47,6 @@ public class TaskServiceImpl implements TaskService {
         isUserTaskAuthor(author, taskFromDb);
         checkAndSetAssigneeToTask(requestDto, taskFromDb);
         Task updatedTask = TasksMapper.update(taskFromDb, requestDto);
-        isTaskValid(updatedTask);
         return TasksMapper.toTaskDto(taskRepository.save(updatedTask));
     }
 
@@ -61,19 +59,44 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Collection<TaskShortDto> getAllTasks(List<Long> tasksIds, Integer from, Integer size) {
+    public Collection<TaskDto> getAllTasks(List<Long> tasksIds, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
         if (tasksIds == null || tasksIds.isEmpty()) {
             return taskRepository.findAll(pageable)
                     .stream()
-                    .map(TasksMapper::toShortTaskDto)
-                    .collect(Collectors.toList());
+                    .map(TasksMapper::toTaskDto)
+                    .toList();
         } else {
             return taskRepository.getAllByIdInOrderByIdDesc(tasksIds, pageable)
                     .stream()
-                    .map(TasksMapper::toShortTaskDto)
-                    .collect(Collectors.toList());
+                    .map(TasksMapper::toTaskDto)
+                    .toList();
         }
+    }
+
+    @Override
+    public List<TaskDto> getByAuthor(Long id) {
+        return taskRepository.getByAuthor(userRepository.getByIdAndCheck(id))
+                .stream()
+                .map(TasksMapper::toTaskDto)
+                .toList();
+    }
+
+    @Override
+    public List<TaskDto> getTasksByAssignee(Long id) {
+        User assignee = userRepository.getByIdAndCheck(id);
+        return taskRepository.getAllByAssignee(assignee)
+                .stream().map(TasksMapper::toTaskDto)
+                .toList();
+    }
+
+    @Override
+    public TaskDto updateStatusByAssignee(Long assigneeId, Long taskId, Status status) {
+        User assignee = userRepository.getByIdAndCheck(assigneeId);
+        Task task = taskRepository.getByIdAndCheck(taskId);
+        isUserTaskAssignee(assignee, task);
+        task.setStatus(status);
+        return TasksMapper.toTaskDto(taskRepository.save(task));
     }
 
     private void isUserTaskAuthor(User user, Task task) {
@@ -82,25 +105,14 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    private void isTaskValid(Task task) {
-        String name = task.getName();
-        if (name.length() < 2 || name.length() > 70) {
-            throw new ValidationException("Name is shorter than 2 or longer than 70");
-        }
-        String description = task.getDescription();
-        if (description.length() < 2 || description.length() > 3000) {
-            throw new ValidationException("Description is shorter than 2 or longer than 3000");
-        }
-        if(task.getAssignee()!=null){
-            userRepository.getByIdAndCheck(task.getAssignee().getId());
-            if (task.getAuthor().getId().equals(task.getAssignee().getId())) {
-                throw new ValidationException("Author can't be a performer");
-            }
+    private void isUserTaskAssignee(User user, Task task) {
+        if (!user.getId().equals(task.getAssignee().getId())) {
+            throw new ValidationException("User with id " + user.getId() + " is not task assignee: " + task.getId());
         }
     }
 
     private void checkAndSetAssigneeToTask(UpdateTaskRequestDto requestDto, Task taskFromDb) {
-        if (requestDto.getAssigneeId()!=null){
+        if (requestDto.getAssigneeId() != null) {
             taskFromDb.setAssignee(userRepository.getByIdAndCheck(requestDto.getAssigneeId()));
         }
     }

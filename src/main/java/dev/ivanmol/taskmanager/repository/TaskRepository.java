@@ -2,6 +2,7 @@ package dev.ivanmol.taskmanager.repository;
 
 import dev.ivanmol.taskmanager.exception.NotFoundException;
 import dev.ivanmol.taskmanager.model.task.Task;
+import dev.ivanmol.taskmanager.model.user.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,5 +19,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     void deleteById(Long id);
 
+    List<Task> getByAuthor(User author);
 
+    List<Task> getAllByAssignee(User assignee);
 }

@@ -2,8 +2,8 @@ package dev.ivanmol.taskmanager.service;
 
 import dev.ivanmol.taskmanager.dto.task.NewTaskRequestDto;
 import dev.ivanmol.taskmanager.dto.task.TaskDto;
-import dev.ivanmol.taskmanager.dto.task.TaskShortDto;
 import dev.ivanmol.taskmanager.dto.task.UpdateTaskRequestDto;
+import dev.ivanmol.taskmanager.model.task.Status;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +31,11 @@ public interface TaskService {
 
     void deleteTaskByAuthor(Long authorId, Long taskId);
 
-    Collection<TaskShortDto> getAllTasks(List<Long> ids, Integer from, Integer size);
+    Collection<TaskDto> getAllTasks(List<Long> ids, Integer from, Integer size);
 
+    List<TaskDto> getByAuthor(Long id);
+
+    List<TaskDto> getTasksByAssignee(Long id);
+
+    TaskDto updateStatusByAssignee(Long assigneeId, Long taskId, Status updateDto);
 }

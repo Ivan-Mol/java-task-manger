@@ -9,6 +9,7 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -54,9 +55,9 @@ public class UserController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateUserById(@PathVariable Long id,
-                               @RequestBody @Valid UpdateUserRequestDto updateDto) {
+    public UserDto updateUserById(@PathVariable Long id,
+                                  @RequestBody @Validated UpdateUserRequestDto updateDto) {
         log.info("PATCH/updateUser with id " + id);
-        userService.updateUser(id, updateDto);
+        return userService.updateUser(id, updateDto);
     }
 }

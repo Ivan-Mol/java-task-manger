@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         User userFromDB = userRepository.getByIdAndCheck(id);
         User updatedUser = UsersMapper.update(userFromDB, updateDto);
         log.debug("User with id = {} was updated by new dto: = {}", id, updateDto);
-        return UsersMapper.toUserDto(userRepository.saveUnique(updatedUser));
+        return UsersMapper.toUserDto(userRepository.save(updatedUser));
     }
 
     @Override
@@ -64,4 +64,5 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Long id) {
         return UsersMapper.toUserDto(userRepository.getByIdAndCheck(id));
     }
+
 }

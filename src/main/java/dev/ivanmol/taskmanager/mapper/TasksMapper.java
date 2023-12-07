@@ -7,9 +7,11 @@ import dev.ivanmol.taskmanager.dto.task.UpdateTaskRequestDto;
 import dev.ivanmol.taskmanager.model.task.Status;
 import dev.ivanmol.taskmanager.model.task.Task;
 import dev.ivanmol.taskmanager.model.user.User;
+import lombok.experimental.UtilityClass;
 
 import java.util.Optional;
 
+@UtilityClass
 public class TasksMapper {
     public static TaskDto toTaskDto(Task task) {
         TaskDto taskDto = new TaskDto();
@@ -19,7 +21,9 @@ public class TasksMapper {
         taskDto.setStatus(task.getStatus());
         taskDto.setPriority(task.getPriority());
         taskDto.setAuthorId(task.getAuthor().getId());
-        taskDto.setAssigneeId(task.getAssignee().getId());
+        if (task.getAssignee() != null) {
+            taskDto.setAssigneeId(task.getAssignee().getId());
+        }
         return taskDto;
     }
 
@@ -27,6 +31,7 @@ public class TasksMapper {
         TaskShortDto shortDto = new TaskShortDto();
         shortDto.setId(task.getId());
         shortDto.setName(task.getName());
+        shortDto.setDescription(task.getDescription());
         return shortDto;
     }
 
