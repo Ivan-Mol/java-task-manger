@@ -2,13 +2,11 @@ package dev.ivanmol.taskmanager.model.task;
 
 import dev.ivanmol.taskmanager.model.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "tasks")
 @AllArgsConstructor

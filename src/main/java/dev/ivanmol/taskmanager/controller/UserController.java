@@ -4,6 +4,8 @@ import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UserDto;
 import dev.ivanmol.taskmanager.service.UserService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
 @Slf4j
+@Hidden
+@Tag(name = "Secret User Controller", description = "Used for tests in Postman")
 public class UserController {
 
     private final UserService userService;
