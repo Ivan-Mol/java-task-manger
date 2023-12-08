@@ -33,7 +33,6 @@ class TaskServiceTest {
     @BeforeEach
     void beforeAll() {
         userRequestDto = new NewUserRequestDto();
-        userRequestDto.setName("ivan");
         userRequestDto.setEmail("ivanov@gmail.com");
         userRequestDto.setPassword("secretKey");
         userWithId = userRepository.save(UsersMapper.toUser(userRequestDto));

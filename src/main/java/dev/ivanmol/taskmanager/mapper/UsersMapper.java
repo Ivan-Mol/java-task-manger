@@ -13,7 +13,6 @@ public class UsersMapper {
 
     public static User toUser(NewUserRequestDto request) {
         User user = new User();
-        user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         return user;
@@ -22,7 +21,6 @@ public class UsersMapper {
     public static User update(User userFromDB, UpdateUserRequestDto updateDto) {
         User fromDb = userFromDB;
         UpdateUserRequestDto update = updateDto;
-        Optional.ofNullable(update.getName()).ifPresent(fromDb::setName);
         Optional.ofNullable(update.getEmail()).ifPresent(fromDb::setEmail);
         Optional.ofNullable(update.getPassword()).ifPresent(fromDb::setPassword);
         return fromDb;
@@ -31,7 +29,6 @@ public class UsersMapper {
     public static UserDto toUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         return userDto;
@@ -40,7 +37,7 @@ public class UsersMapper {
     public static UserShortDto toUserShortDto(User user) {
         UserShortDto userDto = new UserShortDto();
         userDto.setId(user.getId());
-        userDto.setName(user.getName());
+        userDto.setEmail(user.getEmail());
         return userDto;
     }
 

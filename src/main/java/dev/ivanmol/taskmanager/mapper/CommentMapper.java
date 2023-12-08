@@ -48,7 +48,7 @@ public class CommentMapper {
 
     public static CommentShortDto toCommentShortDto(Comment comment) {
         CommentShortDto commentShortDto = new CommentShortDto();
-        commentShortDto.setAuthorName(comment.getAuthor().getName());
+        commentShortDto.setAuthorId(comment.getAuthor().getId());
         commentShortDto.setText(comment.getText());
         commentShortDto.setTaskId(comment.getTask().getId());
         commentShortDto.setCreatedOn(comment.getCreatedOn());

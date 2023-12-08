@@ -33,13 +33,11 @@ class TaskRepositoryTest {
     @BeforeEach
     public void beforeEach() {
         User user1 = new User();
-        user1.setName("user1");
         user1.setEmail("user1@mail.com");
         user1.setPassword("soSecretKey");
         createdUser1 = userRepository.save(user1);
 
         User user2 = new User();
-        user2.setName("user2");
         user2.setEmail("user2@mail.com");
         user2.setPassword("soSecretKey2");
         createdUser2 = userRepository.save(user2);

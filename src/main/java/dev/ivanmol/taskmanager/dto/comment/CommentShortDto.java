@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class CommentShortDto {
-    private String authorName;
+    private Long authorId;
     private String text;
     private Long taskId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

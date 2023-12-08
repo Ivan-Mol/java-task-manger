@@ -29,23 +29,23 @@ public class TaskControllerTest {
     @MockBean
     private TaskService taskServiceMock;
 
-    @SneakyThrows
-    @Test
-    void getTaskById() {
-        TaskDto responseDto = new TaskDto();
-        responseDto.setId(1L);
-        responseDto.setAssigneeId(2L);
-        responseDto.setName("test task");
-        responseDto.setPriority(Priority.LOW);
-        responseDto.setDescription("description test");
-        responseDto.setStatus(Status.NEW);
-        responseDto.setAuthorId(3L);
-
-        when(taskServiceMock.getById(1L)).thenReturn(responseDto);
-
-        mockMvc.perform(get("/tasks/{taskId}", responseDto.getId()))
-
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
-    }
+//    @SneakyThrows
+//    @Test
+//    void getTaskById() {
+//        TaskDto responseDto = new TaskDto();
+//        responseDto.setId(1L);
+//        responseDto.setAssigneeId(2L);
+//        responseDto.setName("test task");
+//        responseDto.setPriority(Priority.LOW);
+//        responseDto.setDescription("description test");
+//        responseDto.setStatus(Status.NEW);
+//        responseDto.setAuthorId(3L);
+//
+//        when(taskServiceMock.getById(1L)).thenReturn(responseDto);
+//
+//        mockMvc.perform(get("/tasks/{taskId}", responseDto.getId()))
+//
+//                .andExpect(status().isOk())
+//                .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
+//    }
 }

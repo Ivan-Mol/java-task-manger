@@ -6,8 +6,6 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class UpdateUserRequestDto {
-    @Length(min = 2, max = 80)
-    private String name;
     @Length(min = 6, max = 254)
     @Email
     private String email;
