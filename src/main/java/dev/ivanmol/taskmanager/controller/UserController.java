@@ -1,8 +1,7 @@
 package dev.ivanmol.taskmanager.controller;
 
-import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
-import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UserDto;
+import dev.ivanmol.taskmanager.dto.user.UserRequestDto;
 import dev.ivanmol.taskmanager.service.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,13 +22,14 @@ import java.util.List;
 @Slf4j
 @Hidden
 @Tag(name = "Secret User Controller", description = "Used for tests in Postman")
+@Validated
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@RequestBody @Valid NewUserRequestDto userDto) throws ValidationException {
+    public UserDto createUser(@RequestBody @Valid UserRequestDto userDto) throws ValidationException {
         log.info("POST/createUser with dto " + userDto);
         return userService.createUser(userDto);
     }
@@ -60,7 +60,7 @@ public class UserController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserDto updateUserById(@PathVariable Long id,
-                                  @RequestBody @Validated UpdateUserRequestDto updateDto) {
+                                  @RequestBody @Valid UserRequestDto updateDto) {
         log.info("PATCH/updateUser with id " + id);
         return userService.updateUser(id, updateDto);
     }

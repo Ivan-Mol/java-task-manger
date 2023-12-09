@@ -6,7 +6,6 @@ import dev.ivanmol.taskmanager.dto.task.UpdateTaskRequestDto;
 import dev.ivanmol.taskmanager.model.task.Status;
 
 import java.util.Collection;
-import java.util.List;
 
 //Пользователи могут управлять своими задачами: создавать новые,
 //редактировать существующие, просматривать и удалять, менять статус и
@@ -31,11 +30,7 @@ public interface TaskService {
 
     void deleteTaskByAuthor(Long authorId, Long taskId);
 
-    Collection<TaskDto> getAllTasks(List<Long> ids, Integer from, Integer size);
-
-    List<TaskDto> getByAuthor(Long id);
-
-    List<TaskDto> getTasksByAssignee(Long id);
+    Collection<TaskDto> getAllTasks(Long authorId, Long assigneeId, Integer from, Integer size);
 
     TaskDto updateStatusByAssignee(Long assigneeId, Long taskId, Status updateDto);
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(SecurityConfig.class)
 @WebMvcTest(value = TaskController.class)
+@WithMockUser
 public class TaskControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -29,23 +31,25 @@ public class TaskControllerTest {
     @MockBean
     private TaskService taskServiceMock;
 
-//    @SneakyThrows
-//    @Test
-//    void getTaskById() {
-//        TaskDto responseDto = new TaskDto();
-//        responseDto.setId(1L);
-//        responseDto.setAssigneeId(2L);
-//        responseDto.setName("test task");
-//        responseDto.setPriority(Priority.LOW);
-//        responseDto.setDescription("description test");
-//        responseDto.setStatus(Status.NEW);
-//        responseDto.setAuthorId(3L);
-//
-//        when(taskServiceMock.getById(1L)).thenReturn(responseDto);
-//
-//        mockMvc.perform(get("/tasks/{taskId}", responseDto.getId()))
-//
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
-//    }
+    @MockBean
+    private JwtService jwtService;
+
+    @SneakyThrows
+    @Test
+    void getTaskById() {
+        TaskDto responseDto = new TaskDto();
+        responseDto.setId(1L);
+        responseDto.setAssigneeId(2L);
+        responseDto.setName("test task");
+        responseDto.setPriority(Priority.LOW);
+        responseDto.setDescription("description test");
+        responseDto.setStatus(Status.NEW);
+        responseDto.setAuthorId(3L);
+
+        when(taskServiceMock.getById(1L)).thenReturn(responseDto);
+
+        mockMvc.perform(get("/tasks/{taskId}", responseDto.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));
+    }
 }

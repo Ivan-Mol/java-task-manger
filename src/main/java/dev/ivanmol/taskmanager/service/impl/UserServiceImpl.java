@@ -1,8 +1,7 @@
 package dev.ivanmol.taskmanager.service.impl;
 
-import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
-import dev.ivanmol.taskmanager.dto.user.UpdateUserRequestDto;
 import dev.ivanmol.taskmanager.dto.user.UserDto;
+import dev.ivanmol.taskmanager.dto.user.UserRequestDto;
 import dev.ivanmol.taskmanager.mapper.UsersMapper;
 import dev.ivanmol.taskmanager.model.user.User;
 import dev.ivanmol.taskmanager.repository.UserRepository;
@@ -11,10 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDto createUser(NewUserRequestDto newUserRequestDto) {
-        User user = userRepository.saveUnique(UsersMapper.toUser(newUserRequestDto));
+    public UserDto createUser(UserRequestDto userRequestDto) {
+        User user = userRepository.saveUnique(UsersMapper.toUser(userRequestDto));
         log.debug("User with id = {}, was created", user.getId());
         return UsersMapper.toUserDto(user);
     }
@@ -37,17 +37,17 @@ public class UserServiceImpl implements UserService {
             return userRepository.findAll(pageable)
                     .stream()
                     .map(UsersMapper::toUserDto)
-                    .collect(Collectors.toList());
+                    .toList();
         } else {
             return userRepository.getAllByIdInOrderByIdDesc(userIds, pageable)
                     .stream()
                     .map(UsersMapper::toUserDto)
-                    .collect(Collectors.toList());
+                    .toList();
         }
     }
 
     @Override
-    public UserDto updateUser(Long id, UpdateUserRequestDto updateDto) {
+    public UserDto updateUser(Long id, UserRequestDto updateDto) {
         User userFromDB = userRepository.getByIdAndCheck(id);
         User updatedUser = UsersMapper.update(userFromDB, updateDto);
         log.debug("User with id = {} was updated by new dto: = {}", id, updateDto);
@@ -65,4 +65,9 @@ public class UserServiceImpl implements UserService {
         return UsersMapper.toUserDto(userRepository.getByIdAndCheck(id));
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.getByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("no user found"));
+    }
 }

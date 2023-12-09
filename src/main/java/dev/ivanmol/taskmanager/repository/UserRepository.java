@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -19,11 +20,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> getAllByIdInOrderByIdDesc(List<Long> userIds, Pageable pageable);
 
     default User saveUnique(User user) {
-        if (getByEmail(user.getEmail()) != null) {
-            throw new ValidationException("Email is already exists");
-        }
+        getByUsername(user.getUsername()).orElseThrow(() -> new ValidationException("Email already exists"));
         return save(user);
     }
 
-    User getByEmail(String email);
+    Optional<User> getByUsername(String username);
 }

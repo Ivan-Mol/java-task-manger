@@ -59,35 +59,29 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Collection<TaskDto> getAllTasks(List<Long> tasksIds, Integer from, Integer size) {
+    public Collection<TaskDto> getAllTasks(Long authorId, Long assigneeId, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        if (tasksIds == null || tasksIds.isEmpty()) {
-            return taskRepository.findAll(pageable)
-                    .stream()
-                    .map(TasksMapper::toTaskDto)
-                    .toList();
-        } else {
-            return taskRepository.getAllByIdInOrderByIdDesc(tasksIds, pageable)
-                    .stream()
-                    .map(TasksMapper::toTaskDto)
-                    .toList();
-        }
-    }
-
-    @Override
-    public List<TaskDto> getByAuthor(Long id) {
-        return taskRepository.getByAuthor(userRepository.getByIdAndCheck(id))
+        return getAllTasks(authorId, assigneeId, pageable)
                 .stream()
                 .map(TasksMapper::toTaskDto)
                 .toList();
     }
 
-    @Override
-    public List<TaskDto> getTasksByAssignee(Long id) {
-        User assignee = userRepository.getByIdAndCheck(id);
-        return taskRepository.getAllByAssignee(assignee)
-                .stream().map(TasksMapper::toTaskDto)
-                .toList();
+    private List<Task> getAllTasks(Long authorId, Long assigneeId, Pageable pageable) {
+        if (authorId != null) {
+            User author = userRepository.getByIdAndCheck(authorId);
+            if (assigneeId != null) {
+                User assignee = userRepository.getByIdAndCheck(assigneeId);
+                return taskRepository.getAllByAuthorAndAssigneeOrderByIdDesc(author, assignee, pageable);
+            } else {
+                return taskRepository.getAllByAuthorOrderByIdDesc(author, pageable);
+            }
+        } else if (assigneeId != null) {
+            User assignee = userRepository.getByIdAndCheck(assigneeId);
+            return taskRepository.getAllByAssigneeOrderByIdDesc(assignee, pageable);
+        } else {
+            return taskRepository.getAllByOrderByIdDesc(pageable);
+        }
     }
 
     @Override

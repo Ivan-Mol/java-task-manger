@@ -3,7 +3,7 @@ package dev.ivanmol.taskmanager.service;
 import dev.ivanmol.taskmanager.dto.task.NewTaskRequestDto;
 import dev.ivanmol.taskmanager.dto.task.TaskDto;
 import dev.ivanmol.taskmanager.dto.task.UpdateTaskRequestDto;
-import dev.ivanmol.taskmanager.dto.user.NewUserRequestDto;
+import dev.ivanmol.taskmanager.dto.user.UserRequestDto;
 import dev.ivanmol.taskmanager.exception.NotFoundException;
 import dev.ivanmol.taskmanager.mapper.UsersMapper;
 import dev.ivanmol.taskmanager.model.task.Priority;
@@ -24,7 +24,7 @@ class TaskServiceTest {
     UserRepository userRepository;
     @Autowired
     TaskServiceImpl taskService;
-    NewUserRequestDto userRequestDto;
+    UserRequestDto userRequestDto;
     User userWithId;
     NewTaskRequestDto taskRequestDto;
     TaskDto taskDtoWithId;
@@ -32,7 +32,7 @@ class TaskServiceTest {
 
     @BeforeEach
     void beforeAll() {
-        userRequestDto = new NewUserRequestDto();
+        userRequestDto = new UserRequestDto();
         userRequestDto.setEmail("ivanov@gmail.com");
         userRequestDto.setPassword("secretKey");
         userWithId = userRepository.save(UsersMapper.toUser(userRequestDto));
@@ -63,12 +63,12 @@ class TaskServiceTest {
 
     @Test
     void getByAuthorShouldThrowAnException() {
-        Assertions.assertThrows(NotFoundException.class, () -> taskService.getByAuthor(userWithId.getId() + 333));
+        Assertions.assertThrows(NotFoundException.class, () -> taskService.getAllTasks(userWithId.getId() + 333, null, 0, 1));
     }
 
     @Test
     void getTasksByAssigneeShouldThrowAnException() {
-        Assertions.assertThrows(NotFoundException.class, () -> taskService.getTasksByAssignee(userWithId.getId() + 333));
+        Assertions.assertThrows(NotFoundException.class, () -> taskService.getAllTasks(null, userWithId.getId() + 333, 0, 1));
     }
 
     @AfterEach
