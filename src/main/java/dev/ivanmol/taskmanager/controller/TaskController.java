@@ -8,6 +8,7 @@ import dev.ivanmol.taskmanager.model.user.User;
 import dev.ivanmol.taskmanager.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class TaskController {
             summary = "Create task",
             description = "Allows you to create a task"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/my")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDto createTask(@Parameter(description = "Request DTO for Task")
@@ -45,6 +47,7 @@ public class TaskController {
             summary = "Delete task",
             description = "Allows you to delete a task"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/my/{taskId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@Parameter(description = "Task Id")
@@ -58,6 +61,7 @@ public class TaskController {
             summary = "Update task by Author",
             description = "Allows an author to update a task"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PatchMapping("/my/{taskId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public TaskDto updateTaskByAuthor(@Parameter(description = "Task Id")
@@ -73,7 +77,8 @@ public class TaskController {
             summary = "Update status of task by an assignee",
             description = "Update status of task by an assignee"
     )
-    @PatchMapping("/{taskId}/assignee/{assigneeId}")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PatchMapping("/my/assigned/{taskId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public TaskDto updateStatusByAssignee(@Parameter(description = "Task id")
                                           @PathVariable Long taskId,
@@ -88,6 +93,7 @@ public class TaskController {
             summary = "Get all tasks",
             description = "Get all tasks with pagination"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<TaskDto> getAllTasks(@Parameter(description = "Author", required = false)
@@ -106,6 +112,7 @@ public class TaskController {
             summary = "Get task by taskId",
             description = "Allows you to get a task by Id"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDto getTaskById(@Parameter(description = "Task Id")

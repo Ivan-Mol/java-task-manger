@@ -20,12 +20,18 @@ Then run it in a Docker container
 docker compose up --detach
 ```
 
-Login as default admin user
-```bash
-curl -X POST -H 'Content-Type: application/json' -d '{"email":"admin@taskmanager.proj","password":"_verySeqqure4dminP@$$!"}' localhost:8080/login
+Swagger is available on http://localhost:8080/swagger-ui/index.html
+
+Use */login* endpoint to exchange credentials for JWT token
+```json
+{
+    "email": "admin@taskmanager.proj",
+    "password": "_verySeqqure4dminP@$$!"
+}
 ```
 
 In the end shut the app down
+
 ```bash
 docker compose down --volumes
 ```

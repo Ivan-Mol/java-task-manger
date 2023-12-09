@@ -8,6 +8,7 @@ import dev.ivanmol.taskmanager.model.user.User;
 import dev.ivanmol.taskmanager.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -34,6 +35,7 @@ public class CommentController {
             summary = "Create comment by user",
             description = "Allows user to create a comment"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/task/{taskId}")
     @ResponseStatus(HttpStatus.CREATED)
     public CommentDto createComment(@Parameter(description = "DTO for new comment")
@@ -49,6 +51,7 @@ public class CommentController {
             summary = "Get all comments for task",
             description = "Allows to get comments for task with pagination"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/task/{taskId}")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentShortDto> getAllForTask(@Parameter(description = "Task Id")
@@ -64,6 +67,7 @@ public class CommentController {
             summary = "Get all comments by author",
             description = "Allows an author to get all comments with pagination"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/my")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentShortDto> getAllByAuthor(@Parameter(description = "From", required = false)
@@ -78,6 +82,7 @@ public class CommentController {
             summary = "Get comment by author",
             description = "Allows an author to create a comment"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/my/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommentDto getCommentByAuthor(@Parameter(description = "Comment id")
@@ -90,6 +95,7 @@ public class CommentController {
             summary = "Update comment by author",
             description = "Allows an author to update a comment"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @PatchMapping("/my/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommentDto updateCommentByAuthor(@Parameter(description = "DTO for update comment entity")
@@ -104,6 +110,7 @@ public class CommentController {
             summary = "Delete comment by author",
             description = "Allows an author to delete a comment"
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/my/{commentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCommentByAuthor(@Parameter(description = "Comment Id")

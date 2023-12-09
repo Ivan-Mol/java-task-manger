@@ -48,10 +48,10 @@ public class SecurityConfig {
         return http.authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/users").hasAuthority("ADMIN")
-                        .requestMatchers("/tasks", "/comments").hasAuthority("USER")
-                        .anyRequest().denyAll())
+                        .requestMatchers("/login", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/users/**").hasAuthority("ADMIN")
+                        .requestMatchers("/tasks/**", "/comments/**").hasAuthority("USER")
+                        .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

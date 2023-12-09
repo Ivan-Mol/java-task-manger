@@ -16,8 +16,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     }
 
     List<Task> getAllByOrderByIdDesc(Pageable pageable);
+
     List<Task> getAllByAuthorOrderByIdDesc(User author, Pageable pageable);
+
     List<Task> getAllByAssigneeOrderByIdDesc(User assignee, Pageable pageable);
+
     List<Task> getAllByAuthorAndAssigneeOrderByIdDesc(User author, User assignee, Pageable pageable);
 
     void deleteById(Long id);
